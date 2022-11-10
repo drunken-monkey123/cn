@@ -1,0 +1,173 @@
+//server
+
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include<stdlib.h>
+struct sockaddr_in server,client1,client2,client3;
+void process(int);
+main()
+{
+ int i,f=0,sd,b,pid,h;
+char s2[100],s1[40];
+sd=socket(AF_INET,SOCK_DGRAM,0);
+server.sin_family=AF_INET;
+printf("enter the port number:");
+scanf("%d",&h);
+server.sin_port=htons(h);
+int cc=0;
+server.sin_addr.s_addr=htonl(INADDR_ANY);
+b=bind(sd,(struct sockaddr*)&server,sizeof(server));
+if(b==0)
+printf("\nbinding successful");
+else
+printf("\n bind  unsuccessful");
+pid=fork();
+printf("jhgyjhh");
+if(pid<0)
+{
+	printf("\nchild creation not created");
+	close(sd);
+	exit(1);
+}
+else if(pid>=0)
+{
+	printf("\nchild process created");
+	process(sd);
+}
+
+close(sd);
+}
+void process(int sd)
+{
+printf("\ninside process\n");
+int i;
+float n;
+char ss[50],s1[40],s2[50],s3[50];
+for( i=0;i<3;i++)
+{
+if(i==0)
+{
+int dd=sizeof(client1);
+printf("Wait for num1:\n");
+recvfrom(sd,s1,sizeof(s1),0,(struct sockaddr *)&client1,&dd);
+printf("\none=%s\n",s1);
+}
+if(i==1)
+{
+int ee=sizeof(client2);
+printf("Wait for num2\n");
+recvfrom(sd,s3,sizeof(s3),0,(struct sockaddr *)&client2,&ee);
+printf("two=%s\n",s3);
+}
+if(i==2)
+{
+int dd=sizeof(client3);
+printf("Wait for symbol\n");
+recvfrom(sd,s2,sizeof(s2),0,(struct sockaddr *)&client3,&dd);
+if(!strcmp(s2,"+"))
+{
+n = atoi(s1)+atoi(s3);
+gcvt(n,3,s2);
+}
+if(!strcmp(s2,"-"))
+{
+n = atoi(s1)-atoi(s3);
+gcvt(n,3,s2);
+}
+if(!strcmp(s2,"*"))
+{
+n = atoi(s1)*atoi(s3);
+gcvt(n,3,s2);
+}
+if(!strcmp(s2,"/"))
+{
+float n1 = atoi(s1)/atoi(s3);
+gcvt(n1,6,s2);
+} 
+printf("\nanswer=%s\n",s2);
+sendto(sd,s2,sizeof(s2),0,(struct sockaddr *)&client3,sizeof(client3));
+}
+}
+}
+
+
+
+
+
+
+//client 1 and 2
+[20bit044@mepcolinux EX6]$cat client.c
+#include <netinet/in.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include<sys/types.h>
+#include <string.h>
+#include <arpa/inet.h>
+void main(){
+        char buf[1024],msg[1024];
+        int sd,port,len;
+        printf("Enter the Port Number: ");
+        scanf("%d",&port);
+        struct sockaddr_in server,client;
+        server.sin_family=AF_INET;
+        server.sin_port=htons(port);
+        server.sin_addr.s_addr = INADDR_ANY;
+        sd = socket(AF_INET,SOCK_DGRAM,0);
+        if (sd<0){
+                printf("Error in Socket Creation\n");
+                exit(0);
+        }
+        printf("Socket Created Successfully\n");
+                printf("Enter the Number 1: ");
+                scanf("%s",msg);
+	len = sizeof(server);
+        sendto(sd,msg,sizeof(msg),0,(struct sockaddr*)&server,len);
+        printf("Disconnected...\n");
+}
+
+
+
+
+//client 3
+#include <netinet/in.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include<sys/types.h>
+#include <string.h>
+#include <arpa/inet.h>
+void main(){
+        char buf[1024],msg[1024];
+        int sd,port,len;
+        printf("Enter the Port Number: ");
+        scanf("%d",&port);
+        struct sockaddr_in server,client;
+        server.sin_family=AF_INET;
+        server.sin_port=htons(port);
+        server.sin_addr.s_addr = INADDR_ANY;
+        sd = socket(AF_INET,SOCK_DGRAM,0);
+        if (sd<0){
+                printf("Error in Socket Creation\n");
+                exit(0);
+        }
+        printf("Socket Created Successfully\n");
+                printf("Enter the Symbol\n + ADD\n- sub\n* multiply\n/ divide\n: ");
+                scanf("%s",msg);
+	len = sizeof(server);
+        sendto(sd,msg,sizeof(msg),0,(struct sockaddr*)&server,len);
+	recvfrom(sd,msg,sizeof(msg),0,(struct sockaddr*)&server,&len);
+	printf("The result is %s\n",msg);
+        printf("Disconnected...\n");
+}
+
+
+

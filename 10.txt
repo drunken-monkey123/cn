@@ -1,0 +1,220 @@
+\\Ex10 Client
+
+#include <netinet/in.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include<sys/types.h>
+#include <string.h>
+#include <arpa/inet.h>
+char out[100];
+
+int main(){
+    int socket_desc;
+    printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+    struct sockaddr_in server_addr;
+    printf("\nEnter port Number:");
+    int port;
+    char host[100];
+    scanf("%d",&port);
+    printf("\n");
+    socklen_t server_struct_length = sizeof(server_addr);
+    socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if(socket_desc < 0){
+        printf("Error while creating socket\n");
+        return -1;
+    }
+int i=0;
+    printf("[+]->Client Socket Created\n\n");
+    
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(port);
+    server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    printf("Enter The Input:\n");
+    scanf("%s",host);
+    int ch[2],c;
+    printf("1-getHostByName 2-getHostByAddress 3-getServbyName 4-getServByPort\n");
+    scanf("%d",&c);
+    ch[0]=c;
+    printf("\n[+] -> Contacting Server-1\n");
+        if(c==1)
+            { sendto(socket_desc, ch, sizeof(ch), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+               sendto(socket_desc, host, sizeof(host), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+                recvfrom(socket_desc, out, sizeof(out), 0,
+         (struct sockaddr*)&server_addr, &server_struct_length);
+                printf("Name : %s \n",host);
+                printf("Ip   : %s \n",out);
+                close(socket_desc);  
+            }
+    char ser[100];
+    int serr[2];
+        if(c==2)
+            {
+                sendto(socket_desc, ch, sizeof(ch), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+               sendto(socket_desc, host, sizeof(host), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+                recvfrom(socket_desc, out, sizeof(out), 0,
+         (struct sockaddr*)&server_addr, &server_struct_length);
+                printf("Ip   : %s \n",host);
+                printf("Host : %s \n",out);
+                close(socket_desc);
+            }
+    if(c==3)
+    {  char proto[100];
+       
+       printf("Enter Protocol:\n");
+       scanf("%s",proto);
+       sendto(socket_desc, ch, sizeof(ch), 0,
+         (struct sockaddr*)&server_addr, server_struct_length); 
+        sendto(socket_desc, host, sizeof(host), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+       sendto(socket_desc, proto, sizeof(proto), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+                recvfrom(socket_desc, serr, sizeof(serr), 0,
+         (struct sockaddr*)&server_addr, &server_struct_length);
+                printf("Server Name   : %s \n",host);
+                printf("Service port  : %d \n",ser[0]);
+                printf("Protocol      : %s \n",proto);
+                close(socket_desc);
+    }
+    if(c==4)
+    {
+     char proto[100];
+       char ports[10]; 
+    
+        printf("Enter port:\n");
+        scanf("%s",ports);
+       printf("Enter Protocol:\n");
+       scanf("%s",proto);
+       sendto(socket_desc, ch, sizeof(ch), 0,
+         (struct sockaddr*)&server_addr, server_struct_length); 
+        sendto(socket_desc,ports, sizeof(ports), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+       sendto(socket_desc, proto, sizeof(proto), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+                recvfrom(socket_desc, ser, sizeof(ser), 0,
+         (struct sockaddr*)&server_addr, &server_struct_length);
+                printf("Server port   : %s \n",ports);
+                printf("Service Name  : %s \n",ser);
+                printf("Protocol      : %s \n",proto);
+                close(socket_desc);
+        
+    }
+    
+    return 0;
+}
+
+
+\\Ex10 Client
+
+#include <netinet/in.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include<sys/types.h>
+#include <string.h>
+#include <arpa/inet.h>
+char out[100];
+
+int main(){
+    int socket_desc;
+    printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+    struct sockaddr_in server_addr;
+    printf("\nEnter port Number:");
+    int port;
+    char host[100];
+    scanf("%d",&port);
+    printf("\n");
+    socklen_t server_struct_length = sizeof(server_addr);
+    socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if(socket_desc < 0){
+        printf("Error while creating socket\n");
+        return -1;
+    }
+int i=0;
+    printf("[+]->Client Socket Created\n\n");
+    
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(port);
+    server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    printf("Enter The Input:\n");
+    scanf("%s",host);
+    int ch[2],c;
+    printf("1-getHostByName 2-getHostByAddress 3-getServbyName 4-getServByPort\n");
+    scanf("%d",&c);
+    ch[0]=c;
+    printf("\n[+] -> Contacting Server-1\n");
+        if(c==1)
+            { sendto(socket_desc, ch, sizeof(ch), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+               sendto(socket_desc, host, sizeof(host), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+                recvfrom(socket_desc, out, sizeof(out), 0,
+         (struct sockaddr*)&server_addr, &server_struct_length);
+                printf("Name : %s \n",host);
+                printf("Ip   : %s \n",out);
+                close(socket_desc);  
+            }
+    char ser[100];
+    int serr[2];
+        if(c==2)
+            {
+                sendto(socket_desc, ch, sizeof(ch), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+               sendto(socket_desc, host, sizeof(host), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+                recvfrom(socket_desc, out, sizeof(out), 0,
+         (struct sockaddr*)&server_addr, &server_struct_length);
+                printf("Ip   : %s \n",host);
+                printf("Host : %s \n",out);
+                close(socket_desc);
+            }
+    if(c==3)
+    {  char proto[100];
+       
+       printf("Enter Protocol:\n");
+       scanf("%s",proto);
+       sendto(socket_desc, ch, sizeof(ch), 0,
+         (struct sockaddr*)&server_addr, server_struct_length); 
+        sendto(socket_desc, host, sizeof(host), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+       sendto(socket_desc, proto, sizeof(proto), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+                recvfrom(socket_desc, serr, sizeof(serr), 0,
+         (struct sockaddr*)&server_addr, &server_struct_length);
+                printf("Server Name   : %s \n",host);
+                printf("Service port  : %d \n",ser[0]);
+                printf("Protocol      : %s \n",proto);
+                close(socket_desc);
+    }
+    if(c==4)
+    {
+     char proto[100];
+       char ports[10]; 
+    
+        printf("Enter port:\n");
+        scanf("%s",ports);
+       printf("Enter Protocol:\n");
+       scanf("%s",proto);
+       sendto(socket_desc, ch, sizeof(ch), 0,
+         (struct sockaddr*)&server_addr, server_struct_length); 
+        sendto(socket_desc,ports, sizeof(ports), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+       sendto(socket_desc, proto, sizeof(proto), 0,
+         (struct sockaddr*)&server_addr, server_struct_length);
+                recvfrom(socket_desc, ser, sizeof(ser), 0,
+         (struct sockaddr*)&server_addr, &server_struct_length);
+                printf("Server port   : %s \n",ports);
+                printf("Service Name  : %s \n",ser);
+                printf("Protocol      : %s \n",proto);
+                close(socket_desc);
+        
+    }
+    
+    return 0;
+}
