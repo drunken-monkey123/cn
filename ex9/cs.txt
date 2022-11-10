@@ -1,0 +1,4 @@
+056,Rahul V,CSE,95,100,8.6
+012,Ram Sudhan R,CSE,100,100,8.9
+025,Vivek S,CSE,96,100,9.6
+011,Madhesh,CSE,99,99,9.9

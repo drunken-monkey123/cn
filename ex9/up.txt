@@ -1,0 +1,8 @@
+fait,1
+faec,2
+facs,3
+stit056,sp
+stit055,sv
+stec056,ms
+stec042,jc
+stcs011,pcfont

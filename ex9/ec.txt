@@ -1,0 +1,4 @@
+056,Manush Sekaran C,ECE,95,100,8.6
+012,Rajni S,ECE,100,100,8.9
+025,Kamal L,ECE,96,100,9.6
+042,Charles Stephenraj,ECE,100,98,9.8
